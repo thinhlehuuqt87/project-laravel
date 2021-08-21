@@ -62,3 +62,12 @@ Route::resource('/photos', 'PhotoController');
 Route::get('user-info', 'MainController@getUserInfo');
 Route::get('contact', 'ContactController@showContactForm');
 Route::post('contact', 'ContactController@insertMessage');
+Route::get('gamethu', 'GameController@handle');
+// template Blade file extends
+Route::get('first-blade-example', function () {
+    return view('fontend.first-blade-example');
+});
+// template Blade Component
+Route::get('components', function ($id) {
+    return view('fontend.component-example');
+});
