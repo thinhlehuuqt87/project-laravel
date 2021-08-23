@@ -33,4 +33,10 @@ class ContactController extends Controller
             ->withCookie($name_cookie)
             ->withCookie($email_cookie);
         }
+    public function store (Request $request){
+        $validateData = $request->validate([
+            'name' => 'bail|required|max:100',
+            'email' => 'bail|required|max:100'
+        ]);
+    }
 }

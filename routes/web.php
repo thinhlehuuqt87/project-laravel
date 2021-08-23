@@ -59,6 +59,13 @@ Route::resource('/photos', 'PhotoController');
 // Route::resource('photo', 'PhotoController', ['axcept'=>[
 //     'create', 'store', 'update', 'destroy'
 // ]]);
+// Validate on Controller
+Route::get('post/create', 'PostController@create');
+Route::post('post', 'PostController@store');
+// Validate ajax request $ validate
+Route::get('post_ajax/create', 'PostController@create_ajax');
+// Route::get('post_ajax', 'PostController@store_ajax');
+
 Route::get('user-info', 'MainController@getUserInfo');
 Route::get('contact', 'ContactController@showContactForm');
 Route::post('contact', 'ContactController@insertMessage');

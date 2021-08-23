@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-class PhotoController extends Controller
+use App\Http\Requests\StorePost;
+class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +13,6 @@ class PhotoController extends Controller
      */
     public function index()
     {
-        echo 'index trong Controllerphoto';
         //
     }
 
@@ -24,8 +23,11 @@ class PhotoController extends Controller
      */
     public function create()
     {
-        echo 'create trong Controllerphoto';
-        //
+        return view ('fontend.create_post');
+    }
+    public function create_ajax()
+    {
+        return view ('fontend.create_post_ajax');
     }
 
     /**
@@ -34,17 +36,15 @@ class PhotoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+
+    public function store(StorePost $request)
     {
-        // $validatedData = $request->validate([
-        //     'title' => 'required|max:100',
-        //     'body' => 'required|min:50',
+        $validated   =   $request->validate(); // su dung request form validate
+        // su dung valid tai Controller
+        // $validateData   =   $request->validate([
+        //     'title' => 'bail|required|max:100',
+        //     'body'  =>  'required|min:50'
         // ]);
-        $name   =   $request->input('name');
-        $ip_address =   $request->ip();
-        echo 'IP người dùng =>'.$ip_address;
-        echo 'store trong Controllerphoto '.$request;
-        //
     }
 
     /**
@@ -55,7 +55,6 @@ class PhotoController extends Controller
      */
     public function show($id)
     {
-        echo 'show trong Controllerphoto '.$id;
         //
     }
 
@@ -67,7 +66,6 @@ class PhotoController extends Controller
      */
     public function edit($id)
     {
-        echo 'edit trong Controllerphoto '.$id;
         //
     }
 
@@ -80,7 +78,6 @@ class PhotoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        echo 'update trong Controllerphoto '.$request.'-'.$id;
         //
     }
 
@@ -92,7 +89,6 @@ class PhotoController extends Controller
      */
     public function destroy($id)
     {
-        echo 'destroy trong Controllerphoto '.$id;
         //
     }
 }
