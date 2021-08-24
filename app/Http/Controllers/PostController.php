@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePost;
+use Illuminate\Support\Facades\DB;
+
 class PostController extends Controller
 {
     /**
@@ -13,7 +15,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $data   =   DB::select('select * from users where active = ?', [1]);
+        return view('user.index', ['data' => $data]);
     }
 
     /**

@@ -75,7 +75,7 @@
         </div>
 
     {{-- <footer class="footer"> --}}
-        @inlude('layouts.footer')
+        @include('layouts.footer')
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

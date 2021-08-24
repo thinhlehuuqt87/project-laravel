@@ -59,6 +59,9 @@ Route::resource('/photos', 'PhotoController');
 // Route::resource('photo', 'PhotoController', ['axcept'=>[
 //     'create', 'store', 'update', 'destroy'
 // ]]);
+// Route::get('product', 'ProductController@index');
+Route::resource('product', 'ProductController', ['only'=> ['index', 'show', 'create', 'edit', 'store', 'update']]);
+// Route::resource('product', 'ProductController', ['axcept'=> ['create', 'store', 'edit']]);
 // Validate on Controller
 Route::get('post/create', 'PostController@create');
 Route::post('post', 'PostController@store');
@@ -78,3 +81,16 @@ Route::get('first-blade-example', function () {
 Route::get('components', function ($id) {
     return view('fontend.component-example');
 });
+// Laravel blade 2
+Route::get('news', function(){
+    $news_list = array(
+      ['title' => 'Bài viết số 1', 'content' => 'Nội dung bài viết 1', 'post_date' => '2017-01-03'],
+      ['title' => 'Bài viết số 2', 'content' => 'Nội dung bài viết 2', 'post_date' => '2017-01-03'],
+      ['title' => 'Bài viết số 3', 'content' => 'Nội dung bài viết 3', 'post_date' => '2017-01-03'],
+      ['title' => 'Bài viết số 4', 'content' => 'Nội dung bài viết 4', 'post_date' => '2017-01-03']
+      );
+    return view('fontend.news-list')->with(compact('news_list'));
+  });
+// Ket noi DB and validate Controller
+Route::get('register', 'UserController@showRegisterForm');
+Route::post('register', 'UserController@storeUser');
