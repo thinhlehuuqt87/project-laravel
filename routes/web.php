@@ -61,7 +61,11 @@ Route::resource('/photos', 'PhotoController');
 // ]]);
 // Route::get('product', 'ProductController@index');
 Route::resource('product', 'ProductController', ['only'=> ['index', 'show', 'create', 'edit', 'store', 'update']]);
+// use verify Authenticate
+Route::resource('admin/product', 'ProductController', ['only'=> ['index', 'show', 'create', 'edit', 'store', 'update'],
+'middleware'=>'auth']);
 // Route::resource('product', 'ProductController', ['axcept'=> ['create', 'store', 'edit']]);
+
 // Validate on Controller
 Route::get('post/create', 'PostController@create');
 Route::post('post', 'PostController@store');
@@ -94,3 +98,7 @@ Route::get('news', function(){
 // Ket noi DB and validate Controller
 Route::get('register', 'UserController@showRegisterForm');
 Route::post('register', 'UserController@storeUser');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
