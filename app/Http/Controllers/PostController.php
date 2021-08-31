@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePost;
+use App\Http\Requests\UpdatePost;
 use Illuminate\Support\Facades\DB;
+use Auth;
+use Gate;
+use App\Post;
 
 class PostController extends Controller
 {
@@ -15,8 +19,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $data   =   DB::select('select * from users where active = ?', [1]);
-        return view('user.index', ['data' => $data]);
+        $posts = Post::published()->paginate();
+        return view('posts.index', compact('posts'));
     }
 
     /**
@@ -26,7 +30,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view ('fontend.create_post');
+        return view ('post.create');
     }
     public function create_ajax()
     {
@@ -42,12 +46,17 @@ class PostController extends Controller
 
     public function store(StorePost $request)
     {
-        $validated   =   $request->validate(); // su dung request form validate
+        // $validated   =   $request->validate(); // su dung request form validate
         // su dung valid tai Controller
         // $validateData   =   $request->validate([
         //     'title' => 'bail|required|max:100',
         //     'body'  =>  'required|min:50'
         // ]);
+        $data = $request->only('title', 'body');
+        $data['slug'] = str_slug($data['title']);
+        $data['user_id'] = Auth::user()->id;
+        $post = Post::create($data);
+        return redirect()->route('edit_post', ['id' => $post->id]);
     }
 
     /**
@@ -58,7 +67,8 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        $post = Post::published()->findOrFail($id);
+        return view('posts.show', compact('post'));
     }
 
     /**
@@ -67,9 +77,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view('posts.edit', compact('post'));
     }
 
     /**
@@ -79,9 +89,12 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Post $post, UpdatePost $request)
     {
-        //
+        $data = $request->only('title', 'body');
+        $data['slug'] = str_slug($data['title']);
+        $post->fill($data)->save();
+        return back();
     }
 
     /**
@@ -93,5 +106,22 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function publisht(Post $post)
+    {
+        $post->published = true;
+        $post->save();
+        return back();
+    }
+
+    public function drafts()
+    {
+        $postsQuery = Post::unpublished();
+        if (Gage::denies('post.draft')) {
+            $postsQuery = $postsQuery->where('user_id', Auth::user()->id);
+        }
+        $posts = $postsQuery->paginate();
+        return view('posts.drafts', compact('posts'));
     }
 }
